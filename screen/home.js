@@ -5,12 +5,11 @@ import data from '../details.json';
 export default function Home({ navigation }) {
   const records = data.records;
 
-  const onPressButton = (data) => {
-    console.log("OnPress"+ data['SurfBreak'])
+  const onPressButton = (surf_break, image, location) => {
     navigation.navigate('Details', {
-      point: data['SurfBreak'],
-      image: data['Photos'],
-      location: data['Address']
+      point: surf_break,
+      image: image,
+      location: location
     })
   }
 
@@ -19,11 +18,13 @@ export default function Home({ navigation }) {
       <StatusBar style="auto" />
       <View style={styles.container}>
         {records.map(data => {
-          console.log(data['SurfBreak'])
+          const surf_break = data['fields']['Destination'];
+          const image = data['fields']["Photos"][0].url;
+          const location = data["fields"]["Destination State/Country"];
           return (
             <Button 
-            title={data['SurfBreak']} 
-            onPress={() => onPressButton(data)}
+            title={surf_break} 
+            onPress={() => onPressButton(surf_break, image, location)}
             />
           )
         })}
