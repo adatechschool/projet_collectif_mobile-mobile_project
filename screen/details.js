@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
 export default function Details({ route }) {
-    const { name, image, location } = route.params;
+    const { point, image, location } = route.params;
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.text}>{name}</Text>
-                <Image source={{uri: image}} style={{width:200, height:200}} />
+                <Text style={styles.text}>{point}</Text>
+                <Image source={{uri: image}} style={{width: 400, height:400}}/>
                 <Text style={styles.text}>{location}</Text>
             </View>
         </ScrollView>

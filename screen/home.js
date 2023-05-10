@@ -1,35 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import data from './details.json';
-import {useEffect} from 'react';
+import { Text, View, ScrollView, StyleSheet, Button } from 'react-native';
+import data from '../details.json';
 
 export default function Home({ navigation }) {
+  const records = data.records;
 
-  useEffect(()=>{
-    try {
-      const response = fetch('./details.json');
-      const json = response.json();
-      console.log(json);
-    } catch (error) {
-      console.error(error);
-    }
-  },[]
-  )
+  const onPressButton = (data) => {
+    console.log("OnPress"+ data['SurfBreak'])
+    navigation.navigate('Details', {
+      point: data['SurfBreak'],
+      image: data['Photos'],
+      location: data['Address']
+    })
+  }
+
   return (
     <ScrollView>
       <StatusBar style="auto" />
       <View style={styles.container}>
-        {data.map(data => {
+        {records.map(data => {
+          console.log(data['SurfBreak'])
           return (
-            <>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Details')
-                }}
-              >
-                <Text style={styles.text}>{data.name}</Text>
-              </TouchableOpacity>
-            </>
+            <Button 
+            title={data['SurfBreak']} 
+            onPress={() => onPressButton(data)}
+            />
           )
         })}
       </View>
