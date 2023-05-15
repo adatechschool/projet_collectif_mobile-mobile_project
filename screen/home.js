@@ -1,16 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { View, ScrollView, StyleSheet, Button } from 'react-native';
-import data from '../details.json';
 import { useEffect, useState } from 'react';
+import { REACT_APP_API_KEY } from '@env';
 
 // Home view
 export default function Home({ navigation }) {
   const [data, setData] = useState([]);
+  const apiKey = REACT_APP_API_KEY;
 
   const getData = async () => {
     await fetch("https://api.airtable.com/v0/appufMtdsdGDfX5Yy/tblHpuFXkxSyrScX8", {
       headers: new Headers({
-        "Authorization": "Bearer keyO0kbRlOjlZCrUU"
+        "Authorization": apiKey
       })
     })
     .then(response => response.json() )
@@ -19,7 +20,7 @@ export default function Home({ navigation }) {
     }).catch((error) => console.log(error))
   }
 
-  // We get data from AirTable api
+  // We get data in the useEffect
   useEffect(() => {
     getData();
   },[])
@@ -32,10 +33,7 @@ export default function Home({ navigation }) {
       location: location
     })
   }
-
-  // We use useEffect in order to get data from API in asynchron 
   
-
   return (
     <ScrollView>
       <StatusBar style="auto" />
