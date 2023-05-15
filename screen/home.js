@@ -2,15 +2,19 @@ import { StatusBar } from 'expo-status-bar';
 import { View, ScrollView, StyleSheet, Button } from 'react-native';
 import data from '../details.json';
 import { useEffect, useState } from 'react';
+import {REACT_APP_API_KEY, BASE_API} from '@env';
 
 // Home view
 export default function Home({ navigation }) {
   const [data, setData] = useState([]);
+  const apiKey = REACT_APP_API_KEY;
+  const baseApi = BASE_API;
+
 
   const getData = async () => {
-    await fetch("https://api.airtable.com/v0/appufMtdsdGDfX5Yy/tblHpuFXkxSyrScX8", {
+    await fetch(baseApi, {
       headers: new Headers({
-        "Authorization": "Bearer keyO0kbRlOjlZCrUU"
+        "Authorization": apiKey
       })
     })
     .then(response => response.json() )
