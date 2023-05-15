@@ -1,11 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, ScrollView, StyleSheet, Button } from 'react-native';
+import { View, ScrollView, StyleSheet, Button } from 'react-native';
 import data from '../details.json';
+import { useEffect, useState } from 'react';
 
+// Home view
 export default function Home({ navigation }) {
-  const records = data.records;
+  //const records = data.records;
+  const [data, setData] = useState([]);
 
-  const onPressButton = (surf_break, image, location) => {
+  // We get data from AirTable api
+  useEffect(() => {
+    fetch("https://api.airtable.com/v0/appufMtdsdGDfX5Yy/tblHpuFXkxSyrScX8", {
+      headers: new Headers({
+        "Authorization": "Bearer keyO0kbRlOjlZCrUU"
+      })
+    })
+    .then(response => response.json() )
+    .then(dataFromApi => {
+      console.log(dataFromApi)
+      setData(dataFromApi)
+    }).catch((error) => console.log(error))
+  },[data])
+
+  // Navigation to Details view with data 
+  const dataToDetails = (surf_break, image, location) => {
     navigation.navigate('Details', {
       point: surf_break,
       image: image,
@@ -13,18 +31,21 @@ export default function Home({ navigation }) {
     })
   }
 
+  // We use useEffect in order to get data from API in asynchron 
+  
+
   return (
     <ScrollView>
       <StatusBar style="auto" />
       <View style={styles.container}>
-        {records.map(data => {
+        {data.map(data => {
           const surf_break = data['fields']['Destination'];
           const image = data['fields']["Photos"][0].url;
           const location = data["fields"]["Destination State/Country"];
           return (
             <Button 
             title={surf_break} 
-            onPress={() => onPressButton(surf_break, image, location)}
+            onPress={() => dataToDetails(surf_break, image, location)}
             />
           )
         })}
@@ -33,6 +54,7 @@ export default function Home({ navigation }) {
   );
 }
 
+// Layout of the view
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
 export default function Details({ route }) {
+    // We pick data form Home view
     const { point, image, location } = route.params;
     return (
         <ScrollView>
@@ -13,6 +14,8 @@ export default function Details({ route }) {
     )
 }
 
+
+// Layout of the view
 const styles = StyleSheet.create({
     container: {
       flex: 1,
