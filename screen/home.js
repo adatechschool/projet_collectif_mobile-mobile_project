@@ -8,6 +8,7 @@ export default function Home({ navigation }) {
   const [data, setData] = useState([]);
   const apiKey = REACT_APP_API_KEY;
 
+  // Function that get data from AirTable API
   const getData = async () => {
     await fetch("https://api.airtable.com/v0/appufMtdsdGDfX5Yy/tblHpuFXkxSyrScX8", {
       headers: new Headers({
