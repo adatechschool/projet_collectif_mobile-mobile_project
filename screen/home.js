@@ -5,22 +5,24 @@ import { useEffect, useState } from 'react';
 
 // Home view
 export default function Home({ navigation }) {
-  //const records = data.records;
   const [data, setData] = useState([]);
 
-  // We get data from AirTable api
-  useEffect(() => {
-    fetch("https://api.airtable.com/v0/appufMtdsdGDfX5Yy/tblHpuFXkxSyrScX8", {
+  const getData = async () => {
+    await fetch("https://api.airtable.com/v0/appufMtdsdGDfX5Yy/tblHpuFXkxSyrScX8", {
       headers: new Headers({
         "Authorization": "Bearer keyO0kbRlOjlZCrUU"
       })
     })
     .then(response => response.json() )
     .then(dataFromApi => {
-      console.log(dataFromApi)
-      setData(dataFromApi)
+      setData(dataFromApi.records)
     }).catch((error) => console.log(error))
-  },[data])
+  }
+
+  // We get data from AirTable api
+  useEffect(() => {
+    getData();
+  },[])
 
   // Navigation to Details view with data 
   const dataToDetails = (surf_break, image, location) => {
