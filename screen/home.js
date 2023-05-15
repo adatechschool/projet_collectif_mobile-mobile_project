@@ -7,11 +7,11 @@ import { REACT_APP_API_KEY, BASE_API } from '@env';
 export default function Home({ navigation }) {
   const [data, setData] = useState([]);
   const apiKey = REACT_APP_API_KEY;
-  const baseApi = BASE_API;
+  const apiEndpoint = BASE_API;
 
   // Function that get data from AirTable API
   const getData = async () => {
-    await fetch(baseApi, {
+    await fetch(apiEndpoint, {
       headers: new Headers({
         "Authorization": apiKey
       })
