@@ -1,11 +1,58 @@
 import { View, StyleSheet, Button, TextInput, SafeAreaView, Image } from 'react-native';
-import {useState } from 'react';
+import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { REACT_APP_API_KEY, BASE_API } from '@env';
 
 export default function Add() {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
+    const [country, setCountry] = useState('');
+    const [level, setLevel] = useState(Number)
+    const [surfBreak, setSurfBreak] = useState('');
+    const [peakSurfSeasonBegins, setPeakSurfSeasonBegins] = useState("");
+    const [peakSurfSeasonEnds, setPeakSurfSeasonEnds] = useState("");
+    const [influencers, setInfluencers] = useState("");
+    const [geocode, setGeocode] = useState("");
     const [imageUri, setImageUri] = useState(null);
+    const apiKey = REACT_APP_API_KEY;
+    const apiEndpoint = BASE_API;
+
+    const newData = {
+        "fields": {
+            "Destination": location,
+            "Destination State/Country": country,
+            "Difficulty Level": level,
+            "Surf Break": [
+              surfBreak
+            ],
+            "Photos": [
+              {
+                "url": imageUri
+              }
+            ],
+            "Peak Surf Season Begins": peakSurfSeasonBegins,
+            "Peak Surf Season Ends": peakSurfSeasonEnds,
+            "Magic Seaweed Link": "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/",
+            "Influencers": [
+              influencers
+            ],
+            "Geocode": geocode
+        }
+    }
+
+    const PostData = async () => {
+        await fetch(apiEndpoint, {
+            method:"POST",
+            headers: {
+                "Authorization": apiKey,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newData)
+        })
+        .then(response => response.json)
+        .then(data => console.log(data))
+        .catch((error) => console.log(error))
+    } 
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -14,7 +61,8 @@ export default function Add() {
             aspect: [4, 3],
             quality: 1
         });
-
+        
+        console.log(result);
         if(!result.canceled) {
             setImageUri(result.assets[0].uri);
         }
@@ -27,19 +75,62 @@ export default function Add() {
                 style={style.input} 
                 onChangeText={setName}
                 value={name}
-                placeholder='name'
+                placeholder='Name'
                 />
                 <TextInput
                 style={style.input}
                 onChangeText={setLocation}
                 value={location}
-                placeholder='location'
+                placeholder='Location'
+                />
+                <TextInput 
+                style={style.input} 
+                onChangeText={setCountry}
+                value={country}
+                placeholder='Country'
+                />
+                <TextInput 
+                style={style.input} 
+                onChangeText={setLevel}
+                value={level}
+                placeholder='Level'
+                />
+                <TextInput
+                style={style.input}
+                onChangeText={setSurfBreak}
+                value={surfBreak}
+                placeholder='Surf Break'
+                />
+                <TextInput 
+                style={style.input} 
+                onChangeText={setPeakSurfSeasonBegins}
+                value={peakSurfSeasonBegins}
+                placeholder='Peak Surf Season Begins'
+                />
+                <TextInput
+                style={style.input}
+                onChangeText={setPeakSurfSeasonEnds}
+                value={peakSurfSeasonEnds}
+                placeholder='Peak Surf Season Ends'
+                />
+                <TextInput
+                style={style.input}
+                onChangeText={setInfluencers}
+                value={influencers}
+                placeholder='Influencers'
+                />
+                <TextInput
+                style={style.input}
+                onChangeText={setGeocode}
+                value={geocode}
+                placeholder='Geocode'
                 />
                 <Button title='Select an image' onPress={pickImage}/>
                 {imageUri && 
                 <Image source={{ uri: imageUri }} 
                 style={{ width: 100, height: 100, marginLeft: "auto", marginRight:"auto" }}
                 />}
+                <Button title='Submit' onPress={PostData}/>
             </View>
         </SafeAreaView>
     )
@@ -53,7 +144,6 @@ const style = StyleSheet.create({
         marginHorizontal: 60
     },
     inputs: {
-        marginTop: 20,
-        rowGap: 15
+        rowGap: 30
     }
 })

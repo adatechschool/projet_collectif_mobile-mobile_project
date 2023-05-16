@@ -16,7 +16,7 @@ export default function Home({ navigation }) {
         "Authorization": apiKey
       })
     })
-    .then(response => response.json() )
+    .then(response => response.json())
     .then(dataFromApi => {
       setData(dataFromApi.records)
     }).catch((error) => console.log(error))
