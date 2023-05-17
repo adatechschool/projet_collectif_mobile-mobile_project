@@ -22,7 +22,7 @@ export default function Add() {
         fields: {
             "Destination": location,
             "Destination State/Country": country,
-            "Difficulty Level": level,
+            "Difficulty Level": Number(level),
             "Surf Break": [
               surfBreak
             ],
