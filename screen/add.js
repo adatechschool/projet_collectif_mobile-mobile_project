@@ -1,5 +1,5 @@
-import { View, StyleSheet, Button, TextInput, SafeAreaView, Image } from 'react-native';
-import { useState } from 'react';
+import { View, StyleSheet, Button, TextInput, SafeAreaView, Image, Text} from 'react-native';
+import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { REACT_APP_API_KEY, BASE_API } from '@env';
 
@@ -7,18 +7,19 @@ export default function Add() {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [country, setCountry] = useState('');
-    const [level, setLevel] = useState(Number)
+    const [level, setLevel] = useState(null)
     const [surfBreak, setSurfBreak] = useState('');
     const [peakSurfSeasonBegins, setPeakSurfSeasonBegins] = useState("");
     const [peakSurfSeasonEnds, setPeakSurfSeasonEnds] = useState("");
     const [influencers, setInfluencers] = useState("");
     const [geocode, setGeocode] = useState("");
     const [imageUri, setImageUri] = useState(null);
+    const [confirm, setConfirm] = useState("");
     const apiKey = REACT_APP_API_KEY;
     const apiEndpoint = BASE_API;
 
     const newData = {
-        "fields": {
+        fields: {
             "Destination": location,
             "Destination State/Country": country,
             "Difficulty Level": level,
@@ -41,18 +42,43 @@ export default function Add() {
     }
 
     const PostData = async () => {
+        console.log(newData)
         await fetch(apiEndpoint, {
             method:"POST",
             headers: {
                 "Authorization": apiKey,
+                "Accept": "application/json",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(newData)
         })
-        .then(response => response.json)
+        .then(response => {
+            if(!response.ok) {
+                setConfirm("The spot is created")
+            } else {
+                console.log("Réussi");
+            }
+            return response.json();
+        })
         .then(data => console.log(data))
         .catch((error) => console.log(error))
+
+       /*setLocation("");
+        setCountry("");
+        setGeocode("");
+        setName("");
+        setLevel(null);
+        setSurfBreak("");
+        setImageUri(null);
+        setInfluencers("");
+        setPeakSurfSeasonBegins("");
+        setPeakSurfSeasonEnds("");*/
+
     } 
+
+    useEffect(() => {
+        PostData();
+    },[])
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -62,7 +88,6 @@ export default function Add() {
             quality: 1
         });
         
-        console.log(result);
         if(!result.canceled) {
             setImageUri(result.assets[0].uri);
         }
@@ -131,6 +156,7 @@ export default function Add() {
                 style={{ width: 100, height: 100, marginLeft: "auto", marginRight:"auto" }}
                 />}
                 <Button title='Submit' onPress={PostData}/>
+                <Text style={style.text}>{confirm}</Text>
             </View>
         </SafeAreaView>
     )
@@ -145,5 +171,9 @@ const style = StyleSheet.create({
     },
     inputs: {
         rowGap: 30
+    },
+    text: {
+        marginRight: "auto",
+        marginLeft:"auto"
     }
 })
