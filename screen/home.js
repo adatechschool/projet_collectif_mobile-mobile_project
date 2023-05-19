@@ -19,6 +19,7 @@ export default function Home({ navigation }) {
     .then(response => response.json())
     .then(dataFromApi => {
       setData(dataFromApi.records)
+      console.log(data)
     }).catch((error) => console.log(error))
   }
 
@@ -41,13 +42,17 @@ export default function Home({ navigation }) {
       <StatusBar style="auto" />
       <View style={styles.container}>
         {data.map(data => {
+          console.log(data)
           const surf_break = data['fields']['Destination'];
           const image = data['fields']["Photos"][0].url;
           const location = data["fields"]["Destination State/Country"];
           return (
             <Button 
             title={surf_break} 
-            onPress={() => dataToDetails(surf_break, image, location)}
+            onPress={() => { 
+              console.log(image)
+              dataToDetails(surf_break, image, location)
+            }}
             />
           )
         })}
