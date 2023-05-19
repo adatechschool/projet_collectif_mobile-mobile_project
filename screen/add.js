@@ -1,7 +1,7 @@
 import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView} from 'react-native';
 import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL } from '@env';
+import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL, UPLOAD_PRESET } from '@env';
 
 export default function Add() {
     const [name, setName] = useState('');
@@ -87,7 +87,7 @@ export default function Add() {
         let base64Img = `data:image/jpg;base64,${pickerResult.assets[0].base64}`;
         let data = {
             "file": base64Img,
-            "upload_preset": "g7zkys9o"
+            "upload_preset": UPLOAD_PRESET
         }
 
         await fetch(CLOUDINARY_URL, {
