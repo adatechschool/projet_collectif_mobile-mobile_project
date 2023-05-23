@@ -1,5 +1,5 @@
-import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView } from 'react-native';
-import { useEffect, useState } from 'react';
+import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView, RefreshControl } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL, UPLOAD_PRESET } from '@env';
 import RNPickerSelect from 'react-native-picker-select';
@@ -7,7 +7,6 @@ import RNPickerSelect from 'react-native-picker-select';
 export default function Add() {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
-    const [country, setCountry] = useState('');
     const [level, setLevel] = useState()
     const [surfBreak, setSurfBreak] = useState('');
     const [peakSurfSeasonBegins, setPeakSurfSeasonBegins] = useState("");
@@ -21,7 +20,7 @@ export default function Add() {
     const newData = {
         fields: {
             "Destination": name,
-            "Destination State/Country": country,
+            "Destination State/Country": location,
             "Difficulty Level": Number(level),
             "Surf Break": [
               surfBreak
@@ -35,9 +34,9 @@ export default function Add() {
             "Peak Surf Season Ends": peakSurfSeasonEnds,
             "Magic Seaweed Link": "https://magicseaweed.com/Pipeline-Backdoor-Surf-Report/616/",
             "Influencers": [
-              influencers /* recAncxRLL7lLA9Vz */ 
+              influencers 
             ],
-            "Geocode": "geocode22"
+            "Geocode": "eyJpIjoiU2tlbGV0b24gQmF5LCBOYW1pYmlhIiwibyI6eyJzdGF0dXMiOiJPSyIsImZvcm1hdHRlZEFkZHJlc3MiOiJOYW1pYmlhIiwibGF0IjotMjUuOTE0NDkxOSwibG5nIjoxNC45MDY4NTk"
         }
     }
 
@@ -55,7 +54,6 @@ export default function Add() {
         .catch((error) => console.log(error))
 
         setLocation("");
-        setCountry("");
         setName("");
         setLevel(null);
         setSurfBreak("");
@@ -82,6 +80,10 @@ export default function Add() {
             aspect: [4,3],
             base64: true
         });
+
+        if(pickerResult.canceled) {
+            return;
+        }
 
         let base64Img = `data:image/jpg;base64,${pickerResult.assets[0].base64}`;
         let data = {
@@ -116,12 +118,6 @@ export default function Add() {
                     onChangeText={setLocation}
                     value={location}
                     placeholder='Location'
-                    />
-                    <TextInput 
-                    style={style.input} 
-                    onChangeText={setCountry}
-                    value={country}
-                    placeholder='Country'
                     />
                     <RNPickerSelect
                     onValueChange={(value) => setLevel(value)}

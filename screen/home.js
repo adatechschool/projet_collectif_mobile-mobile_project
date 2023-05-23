@@ -1,13 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, ScrollView, StyleSheet, Button } from 'react-native';
-import { useEffect, useState } from 'react';
+import { View, ScrollView, StyleSheet, Button, RefreshControl } from 'react-native';
+import { useEffect, useState, useCallback } from 'react';
 import { REACT_APP_API_KEY, BASE_API } from '@env';
 
 // Home view
 export default function Home({ navigation }) {
   const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const apiKey = REACT_APP_API_KEY;
   const apiEndpoint = BASE_API;
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+        setRefreshing(false);
+    }, 2000);
+  }, [])
 
   // Function that get data from AirTable API
   const getData = async () => {
@@ -38,7 +46,9 @@ export default function Home({ navigation }) {
   }
   
   return (
-    <ScrollView>
+    <ScrollView refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+    }>
       <StatusBar style="auto" />
       <View style={styles.container}>
         {data.map(data => {
