@@ -33,7 +33,7 @@ export default function Home({ navigation }) {
     navigation.navigate('Details', {
       point: surf_break,
       image: image,
-      location: location
+      location: location,
     })
   }
   

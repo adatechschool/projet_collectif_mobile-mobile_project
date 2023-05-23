@@ -1,7 +1,8 @@
-import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL, UPLOAD_PRESET } from '@env';
+import RNPickerSelect from 'react-native-picker-select';
 
 export default function Add() {
     const [name, setName] = useState('');
@@ -12,7 +13,6 @@ export default function Add() {
     const [peakSurfSeasonBegins, setPeakSurfSeasonBegins] = useState("");
     const [peakSurfSeasonEnds, setPeakSurfSeasonEnds] = useState("");
     const [influencers, setInfluencers] = useState("");
-    const [geocode, setGeocode] = useState("");
     const [imageUri, setImageUri] = useState(null);
     const [confirm, setConfirm] = useState("");
     const apiKey = REACT_APP_API_KEY;
@@ -37,7 +37,7 @@ export default function Add() {
             "Influencers": [
               influencers /* recAncxRLL7lLA9Vz */ 
             ],
-            "Geocode": geocode
+            "Geocode": "geocode22"
         }
     }
 
@@ -56,7 +56,6 @@ export default function Add() {
 
         setLocation("");
         setCountry("");
-        setGeocode("");
         setName("");
         setLevel(null);
         setSurfBreak("");
@@ -102,8 +101,6 @@ export default function Add() {
         }).catch(err => console.log(err))
     }
 
-    
-
     return (
         <ScrollView>
             <SafeAreaView style={{flex: 1, justifyContent: "center", marginTop: 40}}>
@@ -126,17 +123,34 @@ export default function Add() {
                     value={country}
                     placeholder='Country'
                     />
-                    <TextInput 
-                    style={style.input} 
-                    onChangeText={setLevel}
+                    <RNPickerSelect
+                    onValueChange={(value) => setLevel(value)}
+                    placeholder={{label: "Level", color: "grey"}}
+                    items={[
+                    { label: '1', value: 1 },
+                    { label: '2', value: 2 },
+                    { label: '3', value: 3 },
+                    { label: '4', value: 4 },
+                    { label: '5', value: 5 },
+                    ]}
                     value={level}
-                    placeholder='Level'
+                    style={{
+                        inputIOSContainer: style.input
+                    }}
                     />
-                    <TextInput
-                    style={style.input}
-                    onChangeText={setSurfBreak}
+                    <RNPickerSelect
+                    onValueChange={(value) => setSurfBreak(value)}
+                    placeholder={{label: "Surf Break", color: "grey"}}
+                    items={[
+                    { label: 'Point Break', value: 'Point Break' },
+                    { label: 'Outer Banks', value: 'Outer Banks' },
+                    { label: 'Reef Break', value: 'Reef Break' },
+                    { label: 'Beach Break', value: 'Beach Break' }
+                    ]}
                     value={surfBreak}
-                    placeholder='Surf Break'
+                    style={{
+                        inputIOSContainer: style.input
+                    }}
                     />
                     <TextInput 
                     style={style.input} 
@@ -150,17 +164,16 @@ export default function Add() {
                     value={peakSurfSeasonEnds}
                     placeholder='Peak Surf Season Ends'
                     />
-                    <TextInput
-                    style={style.input}
-                    onChangeText={setInfluencers}
+                    <RNPickerSelect
+                    onValueChange={(value) => setInfluencers(value)}
+                    placeholder={{label: "Influencers", color: "grey"}}
+                    items={[
+                    { label: 'Boa Smith', value: 'recAncxRLL7lLA9Vz' }
+                    ]}
                     value={influencers}
-                    placeholder='Influencers'
-                    />
-                    <TextInput
-                    style={style.input}
-                    onChangeText={setGeocode}
-                    value={geocode}
-                    placeholder='Geocode'
+                    style={{
+                        inputIOSContainer: style.input
+                    }}
                     />
                     <Button title='Select an image' onPress={openImagePickerAsync}/>
                     {imageUri && 
