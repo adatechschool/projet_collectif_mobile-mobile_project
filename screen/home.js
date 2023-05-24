@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, ScrollView, StyleSheet, Button, RefreshControl } from 'react-native';
-import { useEffect, useState, useCallback } from 'react';
+import { View, ScrollView, StyleSheet, Button } from 'react-native';
+import { useEffect, useState } from 'react';
 import { REACT_APP_API_KEY, BASE_API } from '@env';
 
 // Home view
