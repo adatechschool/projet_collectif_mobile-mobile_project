@@ -6,16 +6,8 @@ import { REACT_APP_API_KEY, BASE_API } from '@env';
 // Home view
 export default function Home({ navigation }) {
   const [data, setData] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
   const apiKey = REACT_APP_API_KEY;
   const apiEndpoint = BASE_API;
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-        setRefreshing(false);
-    }, 2000);
-  }, [])
 
   // Function that get data from AirTable API
   const getData = async () => {
