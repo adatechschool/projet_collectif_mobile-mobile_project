@@ -1,10 +1,11 @@
 import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView, RefreshControl } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL, UPLOAD_PRESET } from '@env';
 import RNPickerSelect from 'react-native-picker-select';
 
 export default function Add() {
+    // We create variable fields of the form
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [level, setLevel] = useState()
@@ -17,6 +18,7 @@ export default function Add() {
     const apiKey = REACT_APP_API_KEY;
     const apiEndpoint = BASE_API;
 
+    // We construct a api request to send to Airtable
     const newData = {
         fields: {
             "Destination": name,
@@ -50,24 +52,23 @@ export default function Add() {
             body: JSON.stringify(newData)
         })
         .then(response =>  response.json())
-        .then(data => console.log(data))
+        .then(data =>{
+            console.log(data)
+            setLocation("");
+            setName("");
+            setLevel(null);
+            setSurfBreak("");
+            setImageUri(null);
+            setInfluencers("");
+            setPeakSurfSeasonBegins("");
+            setPeakSurfSeasonEnds("");
+            setConfirm("Votre spot a été ajouté")
+        })
         .catch((error) => console.log(error))
 
-        setLocation("");
-        setName("");
-        setLevel(null);
-        setSurfBreak("");
-        setImageUri(null);
-        setInfluencers("");
-        setPeakSurfSeasonBegins("");
-        setPeakSurfSeasonEnds("");
     } 
 
-    useEffect(() => {
-        PostData();
-    },[])
-
-    // We retrieve the uri of the image in order to 
+    // We retrieve the uri of the image in order to pick a local image
     const openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
         if(permissionResult.granted == false) {

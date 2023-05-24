@@ -27,14 +27,13 @@ export default function Home({ navigation }) {
     .then(response => response.json())
     .then(dataFromApi => {
       setData(dataFromApi.records)
-      console.log(data)
     }).catch((error) => console.log(error))
   }
 
   // We get data in the useEffect
   useEffect(() => {
     getData();
-  },[])
+  },[data])
 
   // Navigation to Details view with data 
   const dataToDetails = (surf_break, image, location) => {
@@ -46,13 +45,10 @@ export default function Home({ navigation }) {
   }
   
   return (
-    <ScrollView refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-    }>
+    <ScrollView>
       <StatusBar style="auto" />
       <View style={styles.container}>
         {data.map(data => {
-          console.log(data)
           const surf_break = data['fields']['Destination'];
           const image = data['fields']["Photos"][0].url;
           const location = data["fields"]["Destination State/Country"];
