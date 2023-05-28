@@ -57,7 +57,6 @@ export default function App() {
           tabBarActiveTintColor: "tomato",
           tabBarInactiveTintColor : "grey"
         })}
-        
       >
         <Tab.Screen name='Home' component={HomeStackScreen}/>
         <Tab.Screen name='Add' component={AddStackScreen}/>
