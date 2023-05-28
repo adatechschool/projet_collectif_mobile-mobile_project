@@ -1,4 +1,4 @@
-import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView, RefreshControl, Alert } from 'react-native';
+import { View, StyleSheet, Button, TextInput, Image, ScrollView, SafeAreaView, RefreshControl, Alert } from 'react-native';
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL, UPLOAD_PRESET } from '@env';
@@ -14,7 +14,6 @@ export default function Add() {
     const [peakSurfSeasonEnds, setPeakSurfSeasonEnds] = useState("");
     const [influencers, setInfluencers] = useState("");
     const [imageUri, setImageUri] = useState(null);
-    const [confirm, setConfirm] = useState("");
     const apiKey = REACT_APP_API_KEY;
     const apiEndpoint = BASE_API;
 
@@ -52,23 +51,30 @@ export default function Add() {
             },
             body: JSON.stringify(newData)
         })
-        .then(response => response.json())
-        .then(data =>{
-            console.log(data)
-            setLocation("");
-            setName("");
-            setLevel(null);
-            setSurfBreak("");
-            setImageUri(null);
-            setInfluencers("");
-            setPeakSurfSeasonBegins("");
-            setPeakSurfSeasonEnds("");
-            Alert.alert("Added spot", "The spot has created", [
-                {
-                    text: "OK"
-                }
-            ])
+        .then(response => {
+            if(!response.ok) {
+                return Alert.alert("Error", "You have to fill all fields", [
+                    { text: "OK"}
+                ])
+            } else {
+                response.json();
+
+                setLocation("");
+                setName("");
+                setLevel(null);
+                setSurfBreak("");
+                setImageUri(null);
+                setInfluencers("");
+                setPeakSurfSeasonBegins("");
+                setPeakSurfSeasonEnds("");
+                Alert.alert("Added spot", "The spot has created", [
+                    {
+                        text: "OK"
+                    }
+                ])
+            }
         })
+        .then(data =>console.log(data))
         .catch((error) => console.log(error))
     } 
 
@@ -195,8 +201,13 @@ const style = StyleSheet.create({
     input: {
         borderWidth: 1,
         color: "black",
-        padding: 5,
+        backgroundColor: "white",
+        padding: 9,
         marginHorizontal: 60,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20
     },
     inputs: {
         rowGap: 25
