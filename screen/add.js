@@ -1,4 +1,4 @@
-import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView, RefreshControl } from 'react-native';
+import { View, StyleSheet, Button, TextInput, Image, Text, ScrollView, SafeAreaView, RefreshControl, Alert } from 'react-native';
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL, UPLOAD_PRESET } from '@env';
@@ -42,6 +42,7 @@ export default function Add() {
         }
     }
 
+    // We retrieve data from API with fetch function
     const PostData = async () => {
         await fetch(apiEndpoint, {
             method:"POST",
@@ -51,7 +52,7 @@ export default function Add() {
             },
             body: JSON.stringify(newData)
         })
-        .then(response =>  response.json())
+        .then(response => response.json())
         .then(data =>{
             console.log(data)
             setLocation("");
@@ -62,10 +63,13 @@ export default function Add() {
             setInfluencers("");
             setPeakSurfSeasonBegins("");
             setPeakSurfSeasonEnds("");
-            setConfirm("Votre spot a été ajouté")
+            Alert.alert("Added spot", "The spot has created", [
+                {
+                    text: "OK"
+                }
+            ])
         })
         .catch((error) => console.log(error))
-
     } 
 
     // We retrieve the uri of the image in order to pick a local image
@@ -83,6 +87,7 @@ export default function Add() {
         });
 
         if(pickerResult.canceled) {
+            setImageUri(null);
             return;
         }
 
@@ -92,6 +97,7 @@ export default function Add() {
             "upload_preset": UPLOAD_PRESET
         }
 
+        // We use Cloudinary to convert images in public url
         await fetch(CLOUDINARY_URL, {
             body: JSON.stringify(data),
             headers: {
@@ -178,7 +184,6 @@ export default function Add() {
                     style={{ width: 100, height: 100, marginLeft: "auto", marginRight:"auto" }}
                     />}
                     <Button title='Submit' onPress={PostData}/>
-                    <Text style={style.text}>{confirm}</Text>
                 </View>
             </SafeAreaView>
         </ScrollView>
