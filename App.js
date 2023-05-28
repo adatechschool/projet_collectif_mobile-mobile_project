@@ -33,7 +33,7 @@ export default function App() {
       </Stack.Navigator>
     )
   }
-  // We use nested stack navigation in tab of 2 screens 
+  // We use nested stack navigation in tab of 2 screen (Home and Add) 
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
