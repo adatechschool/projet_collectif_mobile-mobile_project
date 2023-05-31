@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { View, ScrollView, StyleSheet, Button } from 'react-native';
-import { useEffect, useState } from 'react';
+import { View, ScrollView, StyleSheet, Text, Pressable } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
 import { REACT_APP_API_KEY, BASE_API } from '@env';
 
 // Home view
@@ -37,21 +36,18 @@ export default function Home({ navigation }) {
   }
   
   return (
-    <ScrollView>
-      <StatusBar style="auto" />
+    <ScrollView style={styles.homeView}>
       <View style={styles.container}>
         {data.map(data => {
           const surf_break = data['fields']['Destination'];
           const image = data['fields']["Photos"][0].url;
           const location = data["fields"]["Destination State/Country"];
           return (
-            <Button 
-            title={surf_break} 
-            onPress={() => { 
-              console.log(image)
-              dataToDetails(surf_break, image, location)
-            }}
-            />
+            <Pressable style={{ marginTop: 11 }} onPress={() => {
+              dataToDetails(surf_break, image, location)}}
+            >
+              <Text style={styles.text}>{surf_break}</Text>
+            </Pressable>
           )
         })}
       </View>
@@ -66,8 +62,12 @@ const styles = StyleSheet.create({
     marginTop: 50,
     alignItems: 'center',
     justifyContent: 'center',
+    fontFamily: "Sopberry"
   },
   text: {
-    fontSize: 25
+    fontSize: 22,
+  },
+  homeView: {
+    backgroundColor: "#00acee",
   }
 });

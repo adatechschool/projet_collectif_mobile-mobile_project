@@ -117,7 +117,7 @@ export default function Add() {
     }
 
     return (
-        <ScrollView>
+        <ScrollView style={style.addView}>
             <SafeAreaView style={{flex: 1, justifyContent: "center", marginTop: 40}}>
                 <View style={style.inputs}>
                     <TextInput 
@@ -184,12 +184,12 @@ export default function Add() {
                         inputIOSContainer: style.input
                     }}
                     />
-                    <Button title='Select an image' onPress={openImagePickerAsync}/>
+                    <Button title='Select an image' onPress={openImagePickerAsync} color="white"/>
                     {imageUri && 
                     <Image source={{ uri: imageUri }} 
                     style={{ width: 100, height: 100, marginLeft: "auto", marginRight:"auto" }}
                     />}
-                    <Button title='Submit' onPress={PostData}/>
+                    <Button title='Submit' onPress={PostData} color="white"/>
                 </View>
             </SafeAreaView>
         </ScrollView>
@@ -215,5 +215,8 @@ const style = StyleSheet.create({
     text: {
         marginRight: "auto",
         marginLeft:"auto"
-    }
+    },
+    addView: {
+        backgroundColor: "#00acee",
+    } 
 })

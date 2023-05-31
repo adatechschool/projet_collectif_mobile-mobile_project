@@ -17,7 +17,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="HomeScreen" 
         component={Home} 
-        options={{title: "Welcome to Spotsurf"}}
+        options={{title: "Welcome to Spotisurf"}}
         />
         <Stack.Screen name="Details" 
         component={Details}
