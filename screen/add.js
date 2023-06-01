@@ -236,10 +236,7 @@ const style = StyleSheet.create({
         backgroundColor: "white",
         padding: 9,
         marginHorizontal: 60,
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderRadius: 20,
         fontFamily: "Sopberry"
     },
     inputs: {
