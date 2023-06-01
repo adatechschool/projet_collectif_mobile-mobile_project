@@ -1,6 +1,10 @@
 import { View, ScrollView, StyleSheet, Text, Pressable } from 'react-native';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { useFonts } from "expo-font";
 import { REACT_APP_API_KEY, BASE_API } from '@env';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 // Home view
 export default function Home({ navigation }) {
@@ -26,6 +30,20 @@ export default function Home({ navigation }) {
     getData();
   },[data])
 
+  const [fontsLoaded] = useFonts({
+    "Sopberry": require("../assets/fonts/Sopberry.otf")
+  })
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+        await SplashScreen.hideAsync();
+    }
+  },[fontsLoaded]);
+
+  if(!fontsLoaded) {
+    return null;
+  }
+
   // Navigation to Details view with data 
   const dataToDetails = (surf_break, image, location) => {
     navigation.navigate('Details', {
@@ -36,7 +54,7 @@ export default function Home({ navigation }) {
   }
   
   return (
-    <ScrollView style={styles.homeView}>
+    <ScrollView style={styles.homeView} onLayout={onLayoutRootView}>
       <View style={styles.container}>
         {data.map(data => {
           const surf_break = data['fields']['Destination'];
@@ -62,10 +80,11 @@ const styles = StyleSheet.create({
     marginTop: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: "Sopberry"
   },
   text: {
-    fontSize: 22,
+    fontSize: 18,
+    fontFamily: "Sopberry",
+    color: "white"
   },
   homeView: {
     backgroundColor: "#00acee",
