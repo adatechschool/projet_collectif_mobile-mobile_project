@@ -7,6 +7,7 @@ import { useCallback } from 'react';
 SplashScreen.preventAutoHideAsync();
 
 export default function Details({ route }) {
+    // We use UseFonts in order to add font in our view
     const [fontsLoaded] = useFonts({
         "Sopberry": require("../assets/fonts/Sopberry.otf")
     })

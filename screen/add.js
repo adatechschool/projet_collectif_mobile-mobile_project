@@ -1,4 +1,4 @@
-import { View, StyleSheet, Button, TextInput, Image, ScrollView, SafeAreaView, Text, Alert, Pressable } from 'react-native';
+import { View, StyleSheet, TextInput, Image, ScrollView, SafeAreaView, Text, Alert, TouchableOpacity } from 'react-native';
 import React, { useState, useCallback } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL, UPLOAD_PRESET } from '@env';
@@ -120,6 +120,7 @@ export default function Add() {
         }).catch(err => console.log(err))
     }
 
+    // We use UseFonts in order to add font in our view
     const [fontsLoaded] = useFonts({
         "Sopberry": require("../assets/fonts/Sopberry.otf")
     })
@@ -211,16 +212,16 @@ export default function Add() {
                         } 
                     }}
                     />
-                    <Pressable onPress={openImagePickerAsync}>
+                    <TouchableOpacity onPress={openImagePickerAsync}>
                         <Text style={style.buttons}>{"Select an image"}</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                     {imageUri && 
                     <Image source={{ uri: imageUri }} 
                     style={{ width: 100, height: 100, marginLeft: "auto", marginRight:"auto" }}
                     />}
-                    <Pressable onPress={PostData}>
+                    <TouchableOpacity onPress={PostData}>
                         <Text style={style.buttons}>{'Submit'}</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
         </ScrollView>
@@ -257,6 +258,10 @@ const style = StyleSheet.create({
         marginLeft:"auto",
         fontSize: 20,
         color: "white",
-        fontFamily: "Sopberry"
+        fontFamily: "Sopberry",
+        backgroundColor: "blue",
+        padding: 7,
+        borderRadius: 15,
+        overflow: "hidden"
     }
 })
