@@ -3,7 +3,7 @@
 
 Welcome to the Spotisurf Mobile App. You can see the best spots surfs in the world with their description.
 
-Stack : React Native and API Airtable (Gave by the shcol)
+Stack : React Native and API Airtable (Gave from the school)
 
 # Architecture
 
