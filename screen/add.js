@@ -1,8 +1,12 @@
-import { View, StyleSheet, Button, TextInput, Image, ScrollView, SafeAreaView, RefreshControl, Alert } from 'react-native';
-import React, { useState } from 'react';
+import { View, StyleSheet, Button, TextInput, Image, ScrollView, SafeAreaView, Text, Alert, Pressable } from 'react-native';
+import React, { useState, useCallback } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { REACT_APP_API_KEY, BASE_API, CLOUDINARY_URL, UPLOAD_PRESET } from '@env';
 import RNPickerSelect from 'react-native-picker-select';
+import { useFonts } from "expo-font";
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function Add() {
     // We create variable fields of the form
@@ -116,8 +120,22 @@ export default function Add() {
         }).catch(err => console.log(err))
     }
 
+    const [fontsLoaded] = useFonts({
+        "Sopberry": require("../assets/fonts/Sopberry.otf")
+    })
+    
+    const onLayoutRootView = useCallback(async () => {
+        if (fontsLoaded) {
+            await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+
+    if(!fontsLoaded) {
+        return null;
+    }
+
     return (
-        <ScrollView style={style.addView}>
+        <ScrollView style={style.addView} onLayout={onLayoutRootView}>
             <SafeAreaView style={{flex: 1, justifyContent: "center", marginTop: 40}}>
                 <View style={style.inputs}>
                     <TextInput 
@@ -144,7 +162,10 @@ export default function Add() {
                     ]}
                     value={level}
                     style={{
-                        inputIOSContainer: style.input
+                        inputIOSContainer: style.input,
+                        inputIOS: {
+                            fontFamily: "Sopberry"
+                        } 
                     }}
                     />
                     <RNPickerSelect
@@ -158,7 +179,10 @@ export default function Add() {
                     ]}
                     value={surfBreak}
                     style={{
-                        inputIOSContainer: style.input
+                        inputIOSContainer: style.input,
+                        inputIOS: {
+                            fontFamily: "Sopberry"
+                        } 
                     }}
                     />
                     <TextInput 
@@ -181,15 +205,22 @@ export default function Add() {
                     ]}
                     value={influencers}
                     style={{
-                        inputIOSContainer: style.input
+                        inputIOSContainer: style.input,
+                        inputIOS: {
+                            fontFamily: "Sopberry"
+                        } 
                     }}
                     />
-                    <Button title='Select an image' onPress={openImagePickerAsync} color="white"/>
+                    <Pressable onPress={openImagePickerAsync}>
+                        <Text style={style.buttons}>{"Select an image"}</Text>
+                    </Pressable>
                     {imageUri && 
                     <Image source={{ uri: imageUri }} 
                     style={{ width: 100, height: 100, marginLeft: "auto", marginRight:"auto" }}
                     />}
-                    <Button title='Submit' onPress={PostData} color="white"/>
+                    <Pressable onPress={PostData}>
+                        <Text style={style.buttons}>{'Submit'}</Text>
+                    </Pressable>
                 </View>
             </SafeAreaView>
         </ScrollView>
@@ -207,7 +238,8 @@ const style = StyleSheet.create({
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
         borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
+        borderTopRightRadius: 20,
+        fontFamily: "Sopberry"
     },
     inputs: {
         rowGap: 25
@@ -218,5 +250,13 @@ const style = StyleSheet.create({
     },
     addView: {
         backgroundColor: "#00acee",
-    } 
+    },
+    buttons: {
+        flex: 1,
+        marginRight: "auto",
+        marginLeft:"auto",
+        fontSize: 20,
+        color: "white",
+        fontFamily: "Sopberry"
+    }
 })
